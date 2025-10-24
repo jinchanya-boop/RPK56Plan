@@ -4,11 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ระบบส่งแผนการสอนออนไลน์</title>
-  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="/_sdk/data_sdk.js"></script>
-  <script src="/_sdk/element_sdk.js"></script>
   <style>
         body {
             box-sizing: border-box;
@@ -64,1609 +62,468 @@
         .toast.success { background-color: #059669; }
         .toast.error { background-color: #dc2626; }
         .toast.info { background-color: #0891b2; }
-    </style>
-  <style>@view-transition { navigation: auto; }</style>
+  </style>
  </head>
  <body class="gradient-bg min-h-full">
-  <div id="app" class="min-h-full"><!-- Header -->
+  <div id="app" class="min-h-full">
+   <!-- Header -->
    <header class="bg-white shadow-md border-b-4 border-pink-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
      <div class="flex items-center justify-between">
       <div class="flex items-center space-x-4">
-       <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-md border-2 border-blue-200"><img src="https://img2.pic.in.th/pic/S__145162426-removebg-preview.png" alt="โลโก้โรงเรียน" class="w-14 h-14 object-contain rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="w-14 h-14 bg-gradient-to-br from-blue-400 to-pink-400 rounded-full flex items-center justify-center" style="display: none;">
-         <svg class="w-8 h-8 text-white" fill="currentColor" viewbox="0 0 20 20"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-         </svg>
-        </div>
+       <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-md border-2 border-blue-200">
+        <img src="https://img2.pic.in.th/pic/S__145162426-removebg-preview.png" alt="โลโก้โรงเรียน" class="w-14 h-14 object-contain rounded-full" onerror="this.style.display='none';">
        </div>
        <div>
-        <h1 id="school-title" class="text-2xl font-bold text-gray-800">ระบบส่งแผนการสอนออนไลน์</h1>
-        <p id="school-subtitle" class="text-lg text-blue-600">โรงเรียนราชประชานุเคราะห์ 56 จังหวัดน่าน</p>
-        <p id="department-subtitle" class="text-sm text-gray-600">กลุ่มบริหารวิชาการ</p>
+        <h1 class="text-2xl font-bold text-gray-800">ระบบส่งแผนการสอนออนไลน์</h1>
+        <p class="text-lg text-blue-600">โรงเรียนราชประชานุเคราะห์ 56 จังหวัดน่าน</p>
+        <p class="text-sm text-gray-600">กลุ่มบริหารวิชาการ</p>
        </div>
       </div>
       <div class="flex items-center space-x-4">
        <div id="user-info" class="text-right">
         <p class="text-sm text-gray-600">เข้าสู่ระบบในฐานะ</p>
         <p id="current-user" class="font-semibold text-blue-600">ครูผู้สอน</p>
-       </div><button id="logout-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"> ออกจากระบบ </button>
+       </div>
+       <button id="logout-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"> ออกจากระบบ </button>
       </div>
      </div>
     </div>
-   </header><!-- Login Modal -->
+   </header>
+
+   <!-- Login Modal -->
    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 card-shadow">
      <div class="text-center mb-6">
       <div class="w-20 h-20 bg-gradient-to-br from-blue-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-4">
-       <svg class="w-10 h-10 text-white" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" />
-       </svg>
+       <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" /></svg>
       </div>
       <h2 class="text-2xl font-bold text-gray-800 mb-2">เข้าสู่ระบบ</h2>
       <p class="text-gray-600">ระบบส่งแผนการสอนออนไลน์</p>
      </div>
      <form id="login-form" class="space-y-4">
-      <div><label class="block text-sm font-medium text-gray-700 mb-2">บทบาท</label> <select id="user-role" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"> <option value="teacher">ครูผู้สอน</option> <option value="academic">หัวหน้างานวิชาการ</option> <option value="admin">ผู้บริหาร</option> </select>
+      <div>
+       <label class="block text-sm font-medium text-gray-700 mb-2">บทบาท</label>
+       <select id="user-role" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+        <option value="teacher">ครูผู้สอน</option>
+        <option value="academic">หัวหน้างานวิชาการ</option>
+        <option value="admin">ผู้บริหาร</option>
+       </select>
       </div>
-      <div><label class="block text-sm font-medium text-gray-700 mb-2">ชื่อผู้ใช้</label> <input type="text" id="username" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="กรอกชื่อผู้ใช้" required>
+      <div>
+       <label class="block text-sm font-medium text-gray-700 mb-2">ชื่อผู้ใช้</label>
+       <input type="text" id="username" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="กรอกชื่อผู้ใช้" required>
       </div>
-      <div><label class="block text-sm font-medium text-gray-700 mb-2">รหัสผ่าน</label> <input type="password" id="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="กรอกรหัสผ่าน" required>
-      </div><button type="submit" class="w-full btn-primary text-white py-3 rounded-lg font-semibold"> เข้าสู่ระบบ </button>
+      <div>
+       <label class="block text-sm font-medium text-gray-700 mb-2">รหัสผ่าน</label>
+       <input type="password" id="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="กรอกรหัสผ่าน" required>
+      </div>
+      <button type="submit" class="w-full btn-primary text-white py-3 rounded-lg font-semibold"> เข้าสู่ระบบ </button>
      </form>
      <div class="mt-6 text-center text-sm text-gray-500">
       <p>ตัวอย่างการเข้าสู่ระบบ:</p>
       <p>ครู: teacher/123 | หัวหน้า: academic/123 | ผู้บริหาร: admin/123</p>
      </div>
     </div>
-   </div><!-- Main Content -->
-   <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 hidden"><!-- Navigation Tabs -->
+   </div>
+
+   <!-- Main Content -->
+   <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 hidden">
+    <!-- Navigation Tabs -->
     <div class="bg-white rounded-xl card-shadow mb-8">
-     <nav class="flex space-x-8 px-6 py-4"><button id="tab-upload" class="tab-btn active px-4 py-2 font-semibold rounded-lg transition-colors"> 📤 ส่งแผนการสอน </button> <button id="tab-review" class="tab-btn px-4 py-2 font-semibold rounded-lg transition-colors"> ✅ ตรวจสอบแผน </button> <button id="tab-dashboard" class="tab-btn px-4 py-2 font-semibold rounded-lg transition-colors"> 📊 แดชบอร์ด </button> <button id="tab-settings" class="tab-btn px-4 py-2 font-semibold rounded-lg transition-colors"> ⚙️ ตั้งค่า </button>
+     <nav class="flex space-x-8 px-6 py-4">
+      <button id="tab-upload" class="tab-btn active px-4 py-2 font-semibold rounded-lg transition-colors"> 📤 ส่งแผนการสอน </button>
+      <button id="tab-review" class="tab-btn px-4 py-2 font-semibold rounded-lg transition-colors"> ✅ ตรวจสอบแผน </button>
+      <button id="tab-dashboard" class="tab-btn px-4 py-2 font-semibold rounded-lg transition-colors"> 📊 แดชบอร์ด </button>
+      <button id="tab-settings" class="tab-btn px-4 py-2 font-semibold rounded-lg transition-colors"> ⚙️ ตั้งค่า </button>
      </nav>
-    </div><!-- Upload Tab -->
+    </div>
+
+    <!-- Upload Tab -->
     <div id="upload-tab" class="tab-content">
-     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8"><!-- Upload Forms for 5 Plans -->
-      <div class="space-y-6">
-       <div class="bg-white rounded-xl card-shadow p-6">
-        <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center"><span class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">📝</span> ส่งแผนการสอน (5 แผน)</h3>
-        <form id="upload-form" class="space-y-6">
-         <div><label class="block text-sm font-medium text-gray-700 mb-2">ชื่อครูผู้สอน</label> <input type="text" id="teacher-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
-         </div>
-         <div><label class="block text-sm font-medium text-gray-700 mb-2">กลุ่มสาระ</label> <select id="subject-group" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required> <option value="">เลือกกลุ่มสาระ</option> <option value="วิทยาศาสตร์และเทคโนโลยี">วิทยาศาสตร์และเทคโนโลยี</option> <option value="คณิตศาสตร์">คณิตศาสตร์</option> <option value="ศิลปะ">ศิลปะ</option> <option value="ภาษาไทย">ภาษาไทย</option> <option value="ภาษาต่างประเทศ">ภาษาต่างประเทศ</option> <option value="สังคมศึกษา ศาสนาและวัฒนธรรม">สังคมศึกษา ศาสนาและวัฒนธรรม</option> <option value="การงานอาชีพ">การงานอาชีพ</option> <option value="สุขศึกษาและพลศึกษา">สุขศึกษาและพลศึกษา</option> <option value="กิจกรรมพัฒนาผู้เรียน">กิจกรรมพัฒนาผู้เรียน</option> </select>
-         </div><!-- Plan 1 -->
-         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h4 class="font-semibold text-blue-800 mb-3">1. แผนการจัดการเรียนรู้ที่ 1</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-           <div><label class="block text-sm font-medium text-gray-700 mb-2">รหัสวิชา</label> <input type="text" id="subject-code-1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="เช่น ว21101" required>
-           </div>
-           <div><label class="block text-sm font-medium text-gray-700 mb-2">ชื่อวิชา</label> <input type="text" id="subject-name-1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="เช่น วิทยาศาสตร์ ม.1" required>
-           </div>
-           <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-2">ไฟล์แนบ (PDF เท่านั้น)</label> <input type="file" id="pdf-file-1" accept=".pdf" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
-           </div>
-          </div>
-         </div><!-- Plan 2 -->
-         <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
-          <h4 class="font-semibold text-pink-800 mb-3">2. แผนการจัดการเรียนรู้ที่ 2</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-           <div><label class="block text-sm font-medium text-gray-700 mb-2">รหัสวิชา</label> <input type="text" id="subject-code-2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="เช่น ว21102">
-           </div>
-           <div><label class="block text-sm font-medium text-gray-700 mb-2">ชื่อวิชา</label> <input type="text" id="subject-name-2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="เช่น วิทยาศาสตร์ ม.2">
-           </div>
-           <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-2">ไฟล์แนบ (PDF เท่านั้น)</label> <input type="file" id="pdf-file-2" accept=".pdf" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-           </div>
-          </div>
-         </div><!-- Plan 3 -->
-         <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-          <h4 class="font-semibold text-green-800 mb-3">3. แผนการจัดการเรียนรู้ที่ 3</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-           <div><label class="block text-sm font-medium text-gray-700 mb-2">รหัสวิชา</label> <input type="text" id="subject-code-3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="เช่น ว21103">
-           </div>
-           <div><label class="block text-sm font-medium text-gray-700 mb-2">ชื่อวิชา</label> <input type="text" id="subject-name-3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="เช่น วิทยาศาสตร์ ม.3">
-           </div>
-           <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-2">ไฟล์แนบ (PDF เท่านั้น)</label> <input type="file" id="pdf-file-3" accept=".pdf" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-           </div>
-          </div>
-         </div><!-- Plan 4 -->
-         <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-          <h4 class="font-semibold text-yellow-800 mb-3">4. แผนการจัดการเรียนรู้ที่ 4</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-           <div><label class="block text-sm font-medium text-gray-700 mb-2">รหัสวิชา</label> <input type="text" id="subject-code-4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="เช่น ว21104">
-           </div>
-           <div><label class="block text-sm font-medium text-gray-700 mb-2">ชื่อวิชา</label> <input type="text" id="subject-name-4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="เช่น วิทยาศาสตร์ ม.4">
-           </div>
-           <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-2">ไฟล์แนบ (PDF เท่านั้น)</label> <input type="file" id="pdf-file-4" accept=".pdf" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-           </div>
-          </div>
-         </div><!-- Plan 5 -->
-         <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
-          <h4 class="font-semibold text-purple-800 mb-3">5. แผนการจัดการเรียนรู้ที่ 5</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-           <div><label class="block text-sm font-medium text-gray-700 mb-2">รหัสวิชา</label> <input type="text" id="subject-code-5" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="เช่น ว21105">
-           </div>
-           <div><label class="block text-sm font-medium text-gray-700 mb-2">ชื่อวิชา</label> <input type="text" id="subject-name-5" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="เช่น วิทยาศาสตร์ ม.5">
-           </div>
-           <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-2">ไฟล์แนบ (PDF เท่านั้น)</label> <input type="file" id="pdf-file-5" accept=".pdf" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-           </div>
-          </div>
-         </div>
-         <div class="flex items-center justify-between pt-4">
-          <div class="text-sm text-gray-600"><span id="upload-count">0</span>/5 แผนในรอบนี้
-          </div><button type="submit" id="submit-btn" class="btn-primary text-white px-6 py-3 rounded-lg font-semibold"> ส่งแผนการสอน </button>
-         </div>
-        </form>
-       </div>
-      </div><!-- Upload Status -->
-      <div class="bg-white rounded-xl card-shadow p-6">
-       <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center"><span class="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center mr-3">📋</span> สถานะการส่งแผน</h3>
-       <div class="space-y-4">
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-         <div class="flex items-center justify-between mb-2"><span class="font-medium text-blue-800">กำหนดส่งแผน</span> <span id="deadline-display" class="text-blue-600 font-semibold">25 ของทุกเดือน</span>
-         </div>
-         <div class="text-sm text-blue-600">
-          เดือนนี้: <span id="current-deadline"></span>
-         </div>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-         <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-          <div class="text-2xl font-bold text-green-600" id="approved-count">
-           0
-          </div>
-          <div class="text-sm text-green-700">
-           อนุมัติแล้ว
-          </div>
-         </div>
-         <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
-          <div class="text-2xl font-bold text-yellow-600" id="pending-count">
-           0
-          </div>
-          <div class="text-sm text-yellow-700">
-           รอตรวจสอบ
-          </div>
-         </div>
-        </div>
-       </div>
-      </div>
-     </div><!-- My Plans List -->
-     <div class="bg-white rounded-xl card-shadow p-6 mt-8">
-      <h3 class="text-xl font-bold text-gray-800 mb-6">แผนการสอนของฉัน</h3>
-      <div id="my-plans-list" class="space-y-4"><!-- Plans will be loaded here -->
-      </div>
-     </div>
-    </div><!-- Review Tab -->
-    <div id="review-tab" class="tab-content hidden">
      <div class="bg-white rounded-xl card-shadow p-6">
-      <div class="flex items-center justify-between mb-6">
-       <h3 class="text-xl font-bold text-gray-800">ตรวจสอบและอนุมัติแผนการสอน</h3>
-       <div class="flex space-x-4"><select id="filter-status" class="px-4 py-2 border border-gray-300 rounded-lg"> <option value="">ทุกสถานะ</option> <option value="รอตรวจ">รอตรวจ</option> <option value="ผ่าน">ผ่าน</option> <option value="แก้ไข">แก้ไข</option> <option value="อนุมัติแล้ว">อนุมัติแล้ว</option> </select> <input type="text" id="search-teacher" placeholder="ค้นหาชื่อครู..." class="px-4 py-2 border border-gray-300 rounded-lg">
-       </div>
-      </div>
-      <div id="review-plans-list" class="space-y-4"><!-- Review plans will be loaded here -->
-      </div>
-     </div>
-    </div><!-- Dashboard Tab -->
-    <div id="dashboard-tab" class="tab-content hidden"><!-- Statistics Cards -->
-     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-      <div class="bg-white rounded-xl card-shadow p-4 text-center">
-       <div class="text-2xl font-bold text-blue-600" id="total-plans">
-        0
-       </div>
-       <div class="text-xs text-gray-600">
-        แผนทั้งหมด
-       </div>
-      </div>
-      <div class="bg-white rounded-xl card-shadow p-4 text-center">
-       <div class="text-2xl font-bold text-green-600" id="completed-teachers">
-        0
-       </div>
-       <div class="text-xs text-gray-600">
-        ครูส่งครบ
-       </div>
-      </div>
-      <div class="bg-white rounded-xl card-shadow p-4 text-center">
-       <div class="text-2xl font-bold text-red-600" id="late-plans">
-        0
-       </div>
-       <div class="text-xs text-gray-600">
-        ส่งช้า
-       </div>
-      </div>
-      <div class="bg-white rounded-xl card-shadow p-4 text-center">
-       <div class="text-2xl font-bold text-yellow-600" id="pending-plans">
-        0
-       </div>
-       <div class="text-xs text-gray-600">
-        รอตรวจ
-       </div>
-      </div>
-     </div><!-- Submission Status Table -->
-     <div class="bg-white rounded-xl card-shadow p-6 mb-6">
-      <div class="flex items-center justify-between mb-4">
-       <h4 class="text-lg font-bold text-gray-800">📋 ตารางการส่งงาน</h4>
-       <div class="flex items-center space-x-4"><select id="filter-submission-status" class="px-3 py-2 border border-gray-300 rounded-lg text-sm"> <option value="">ทุกสถานะ</option> <option value="ontime">ส่งทันเวลา</option> <option value="late">ส่งล่าช้า</option> <option value="notsubmitted">ยังไม่ส่ง</option> </select> <input type="text" id="search-submission-teacher" placeholder="ค้นหาชื่อครู..." class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
-       </div>
-      </div>
-      <div class="overflow-x-auto">
-       <table class="w-full text-sm">
-        <thead class="bg-gray-50">
-         <tr>
-          <th class="px-4 py-3 text-left font-semibold text-gray-700">ชื่อครู</th>
-          <th class="px-4 py-3 text-center font-semibold text-gray-700">กลุ่มสาระ</th>
-          <th class="px-4 py-3 text-center font-semibold text-gray-700">จำนวนแผน</th>
-          <th class="px-4 py-3 text-center font-semibold text-gray-700">วันที่ส่งล่าสุด</th>
-          <th class="px-4 py-3 text-center font-semibold text-gray-700">สถานะการส่ง</th>
-          <th class="px-4 py-3 text-center font-semibold text-gray-700">ความคืบหน้า</th>
-         </tr>
-        </thead>
-        <tbody id="submission-table-body" class="divide-y divide-gray-200"><!-- Table rows will be loaded here -->
-        </tbody>
-       </table>
-      </div>
-      <div class="mt-4 flex items-center justify-between text-sm text-gray-600">
+      <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center"><span class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">📝</span> ส่งแผนการสอน (5 แผน)</h3>
+      <form id="upload-form" class="space-y-6">
        <div>
-        แสดง <span id="showing-count">0</span> จาก <span id="total-teachers">0</span> ครู
+        <label class="block text-sm font-medium text-gray-700 mb-2">ชื่อครูผู้สอน</label>
+        <input type="text" id="teacher-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
        </div>
-       <div class="flex items-center space-x-4">
-        <div class="flex items-center space-x-2">
-         <div class="w-3 h-3 bg-green-500 rounded-full"></div><span>ส่งทันเวลา</span>
-        </div>
-        <div class="flex items-center space-x-2">
-         <div class="w-3 h-3 bg-red-500 rounded-full"></div><span>ส่งล่าช้า</span>
-        </div>
-        <div class="flex items-center space-x-2">
-         <div class="w-3 h-3 bg-gray-400 rounded-full"></div><span>ยังไม่ส่ง</span>
-        </div>
+       <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">กลุ่มสาระ</label>
+        <select id="subject-group" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
+         <option value="">เลือกกลุ่มสาระ</option>
+         <option value="วิทยาศาสตร์และเทคโนโลยี">วิทยาศาสตร์และเทคโนโลยี</option>
+         <option value="คณิตศาสตร์">คณิตศาสตร์</option>
+         <option value="ศิลปะ">ศิลปะ</option>
+         <option value="ภาษาไทย">ภาษาไทย</option>
+         <option value="ภาษาต่างประเทศ">ภาษาต่างประเทศ</option>
+         <option value="สังคมศึกษา ศาสนาและวัฒนธรรม">สังคมศึกษา ศาสนาและวัฒนธรรม</option>
+         <option value="การงานอาชีพ">การงานอาชีพ</option>
+         <option value="สุขศึกษาและพลศึกษา">สุขศึกษาและพลศึกษา</option>
+         <option value="กิจกรรมพัฒนาผู้เรียน">กิจกรรมพัฒนาผู้เรียน</option>
+        </select>
        </div>
-      </div>
-     </div>
-     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6"><!-- Chart -->
-      <div class="bg-white rounded-xl card-shadow p-4">
-       <h4 class="text-lg font-bold text-gray-800 mb-3">สถิติตามกลุ่มสาระ</h4>
-       <div class="h-64">
-        <canvas id="subject-chart"></canvas>
-       </div>
-      </div><!-- Recent Activities -->
-      <div class="bg-white rounded-xl card-shadow p-4">
-       <h4 class="text-lg font-bold text-gray-800 mb-3">กิจกรรมล่าสุด</h4>
-       <div id="recent-activities" class="space-y-2 max-h-64 overflow-y-auto"><!-- Activities will be loaded here -->
-       </div>
-      </div>
-     </div>
-    </div><!-- Settings Tab -->
-    <div id="settings-tab" class="tab-content hidden">
-     <div class="bg-white rounded-xl card-shadow p-6">
-      <h3 class="text-xl font-bold text-gray-800 mb-6">ตั้งค่าระบบ</h3>
-      <form id="settings-form" class="space-y-6">
-       <div><label class="block text-sm font-medium text-gray-700 mb-2">กำหนดส่งแผน (วันที่ของเดือน)</label> <input type="number" id="deadline-setting" min="1" max="31" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" value="25">
-        <p class="text-sm text-gray-500 mt-1">ตั้งค่าวันที่ของทุกเดือนที่ครูต้องส่งแผนการสอน</p>
-       </div>
-       <div><label class="block text-sm font-medium text-gray-700 mb-2">จำนวนแผนสูงสุดต่อรอบ</label> <input type="number" id="max-plans-setting" min="1" max="10" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" value="5">
-       </div><button type="submit" class="btn-primary text-white px-6 py-3 rounded-lg font-semibold"> บันทึกการตั้งค่า </button>
+
+       <!-- Plans 1-5 -->
+       <div id="plans-container"></div>
+
+       <button type="submit" id="submit-btn" class="w-full btn-primary text-white py-3 rounded-lg font-semibold hover:shadow-lg"> ส่งแผนการสอน </button>
       </form>
      </div>
     </div>
-   </main><!-- Review Modal -->
-   <div id="review-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" onclick="closeReviewModal()">
-    <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 card-shadow max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
-     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-xl font-bold text-gray-800">ตรวจสอบแผนการสอน</h3><button id="close-review-modal" class="text-gray-500 hover:text-gray-700">
-       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-       </svg></button>
-     </div>
-     <div id="review-plan-details" class="mb-6"><!-- Plan details will be loaded here -->
-     </div>
-     <div class="space-y-4">
-      <div><label class="block text-sm font-medium text-gray-700 mb-2">ความเห็น/หมายเหตุ</label> <textarea id="review-comment" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="กรอกความเห็นหรือข้อเสนอแนะ..."></textarea>
-      </div>
-      <div class="flex space-x-4"><button id="approve-btn" type="button" class="flex-1 bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors cursor-pointer" onclick="handleReview('อนุมัติแล้ว')"> ✓ อนุมัติ </button> <button id="revision-btn" type="button" class="flex-1 bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors cursor-pointer" onclick="handleReview('แก้ไข')"> ↩ ส่งกลับแก้ไข </button> <button id="reject-btn" type="button" class="flex-1 bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors cursor-pointer" onclick="handleReview('ไม่อนุมัติ')"> ✗ ไม่อนุมัติ </button>
-      </div>
+
+    <!-- Review Tab -->
+    <div id="review-tab" class="tab-content hidden">
+     <div id="review-container" class="space-y-4"></div>
+    </div>
+
+    <!-- Dashboard Tab -->
+    <div id="dashboard-tab" class="tab-content hidden">
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8" id="stats-container"></div>
+     <div class="bg-white rounded-xl card-shadow p-6">
+      <h3 class="text-xl font-bold mb-4">กราฟสถานะแผนการสอน</h3>
+      <canvas id="status-chart"></canvas>
      </div>
     </div>
-   </div>
+
+    <!-- Settings Tab -->
+    <div id="settings-tab" class="tab-content hidden">
+     <div class="bg-white rounded-xl card-shadow p-6 max-w-2xl">
+      <h3 class="text-xl font-bold text-gray-800 mb-6">ตั้งค่าระบบ</h3>
+      <form id="settings-form" class="space-y-4">
+       <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">กำหนดเส้นตายประจำเดือน (วันที่)</label>
+        <input type="number" id="deadline-day" class="w-full px-4 py-2 border border-gray-300 rounded-lg" min="1" max="31" value="10">
+       </div>
+       <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">ปีการศึกษา</label>
+        <input type="number" id="academic-year" class="w-full px-4 py-2 border border-gray-300 rounded-lg" value="2567">
+       </div>
+       <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">ภาคเรียน</label>
+        <select id="semester" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+         <option value="1">ภาคเรียนที่ 1</option>
+         <option value="2">ภาคเรียนที่ 2</option>
+        </select>
+       </div>
+       <button type="submit" class="w-full btn-primary text-white py-2 rounded-lg font-semibold"> บันทึกตั้งค่า </button>
+      </form>
+     </div>
+    </div>
+   </main>
   </div>
+
+  <!-- Scripts -->
+  <script src="gas-integration.js"></script>
   <script>
-        // Global variables
-        let currentUser = null;
-        let currentRole = null;
-        let allPlans = [];
-        let settings = {
-            deadline_day: 25,
-            max_plans: 5
-        };
-        let isLoading = false;
+    // ข้อมูลทั่วไป
+    let currentUser = null;
+    let userRole = null;
+    let isLoading = false;
+    let allPlans = [];
+    let statusChart = null;
+    let settings = {
+      deadline_day: 10,
+      academic_year: 2567,
+      semester: 1
+    };
 
-        // Default config
-        const defaultConfig = {
-            school_name: "โรงเรียนราชประชานุเคราะห์ 56 จังหวัดน่าน",
-            department_name: "กลุ่มบริหารวิชาการ",
-            deadline_day: "25"
-        };
+    // เริ่มต้นแอปพลิเคชั่น
+    async function initApp() {
+      setupEventListeners();
+      renderPlansForm();
+      await loadSettings();
+    }
 
-        // Data handler for SDK
-        const dataHandler = {
-            onDataChanged(data) {
-                allPlans = data || [];
-                updateUI();
-                updateDashboard();
-                updateUploadCount();
-            }
-        };
+    // ตั้งค่า Event Listeners
+    function setupEventListeners() {
+      // Login
+      document.getElementById('login-form').addEventListener('submit', handleLogin);
+      document.getElementById('logout-btn').addEventListener('click', handleLogout);
 
-        // Initialize app
-        async function initApp() {
-            try {
-                console.log('Initializing app...');
-                
-                // Check if Data SDK is loaded
-                if (!window.dataSdk) {
-                    console.error('Data SDK not loaded');
-                    showToast('ระบบไม่พร้อมใช้งาน กรุณารีเฟรชหน้าเว็บ', 'error');
-                    return;
-                }
-                
-                // Initialize Data SDK
-                console.log('Initializing Data SDK...');
-                const initResult = await window.dataSdk.init(dataHandler);
-                if (!initResult.isOk) {
-                    console.error('Data SDK init failed:', initResult.error);
-                    showToast('ไม่สามารถเชื่อมต่อฐานข้อมูลได้ กรุณาลองใหม่อีกครั้ง', 'error');
-                    return;
-                }
-                console.log('Data SDK initialized successfully');
+      // Upload
+      document.getElementById('upload-form').addEventListener('submit', handleUploadSubmit);
 
-                // Initialize Element SDK
-                if (window.elementSdk) {
-                    console.log('Initializing Element SDK...');
-                    await window.elementSdk.init({
-                        defaultConfig,
-                        onConfigChange: render,
-                        mapToCapabilities,
-                        mapToEditPanelValues
-                    });
-                    console.log('Element SDK initialized successfully');
-                }
+      // Navigation
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', handleTabChange);
+      });
 
-                setupEventListeners();
-                checkLoginStatus();
-                
-                console.log('App initialization completed');
-                
-            } catch (error) {
-                console.error('App initialization error:', error);
-                showToast(`เกิดข้อผิดพลาดในการเริ่มต้นระบบ: ${error.message}`, 'error');
-            }
+      // Settings
+      document.getElementById('settings-form').addEventListener('submit', handleSettingsSave);
+    }
+
+    // จัดการ Login
+    function handleLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const role = document.getElementById('user-role').value;
+
+      // ตัวอย่าง validation (ควรใช้ authentication ที่เหมาะสม)
+      if (password === '123') {
+        currentUser = username;
+        userRole = role;
+        showLoginPanel();
+      } else {
+        showToast('รหัสผ่านไม่ถูกต้อง', 'error');
+      }
+    }
+
+    // แสดงแผนฟอร์ม
+    function renderPlansForm() {
+      const container = document.getElementById('plans-container');
+      let html = '';
+      
+      for (let i = 1; i <= 5; i++) {
+        html += `
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h4 class="font-semibold text-blue-800 mb-3">${i}. แผนการจัดการเรียนรู้ที่ ${i}</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">รหัสวิชา</label>
+                <input type="text" id="subject-code-${i}" class="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="เช่น ว21101" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">ชื่อวิชา</label>
+                <input type="text" id="subject-name-${i}" class="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="เช่น วิทยาศาสตร์ ม.1" required>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2">ไฟล์แนบ (PDF เท่านั้น)</label>
+                <input type="file" id="pdf-file-${i}" accept=".pdf" class="w-full px-3 py-2 border border-gray-300 rounded-lg" required>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      container.innerHTML = html;
+    }
+
+    // จัดการการส่งแบบฟอร์ม
+    async function handleUploadSubmit(e) {
+      e.preventDefault();
+      
+      const teacherName = document.getElementById('teacher-name').value;
+      const subjectGroup = document.getElementById('subject-group').value;
+
+      if (!teacherName || !subjectGroup) {
+        showToast('กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
+        return;
+      }
+
+      // เตรียมข้อมูล
+      const formData = {
+        action: 'submitPlan',
+        teacher_name: teacherName,
+        subject_group: subjectGroup
+      };
+
+      // เพิ่มข้อมูลแผน
+      for (let i = 1; i <= 5; i++) {
+        formData[`subject_code_${i}`] = document.getElementById(`subject-code-${i}`).value;
+        formData[`subject_name_${i}`] = document.getElementById(`subject-name-${i}`).value;
+        
+        const fileInput = document.getElementById(`pdf-file-${i}`);
+        if (fileInput.files[0]) {
+          formData[`pdf_file_name_${i}`] = fileInput.files[0].name;
         }
+      }
 
-        // Render function for Element SDK
-        async function render(config) {
-            const schoolTitle = document.getElementById('school-title');
-            const schoolSubtitle = document.getElementById('school-subtitle');
-            const departmentSubtitle = document.getElementById('department-subtitle');
-            const deadlineDisplay = document.getElementById('deadline-display');
-            const deadlineSetting = document.getElementById('deadline-setting');
+      await handleSubmit(formData);
+    }
 
-            if (schoolTitle) schoolTitle.textContent = 'ระบบส่งแผนการสอนออนไลน์';
-            if (schoolSubtitle) schoolSubtitle.textContent = config.school_name || defaultConfig.school_name;
-            if (departmentSubtitle) departmentSubtitle.textContent = config.department_name || defaultConfig.department_name;
-            if (deadlineDisplay) deadlineDisplay.textContent = `${config.deadline_day || defaultConfig.deadline_day} ของทุกเดือน`;
-            if (deadlineSetting) deadlineSetting.value = config.deadline_day || defaultConfig.deadline_day;
+    // จัดการการเปลี่ยน Tab
+    function handleTabChange(e) {
+      const tabName = e.target.id.replace('tab-', '');
+      
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.add('hidden');
+      });
+      
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-blue-100', 'text-blue-600');
+      });
 
-            settings.deadline_day = parseInt(config.deadline_day || defaultConfig.deadline_day);
-            updateCurrentDeadline();
-        }
+      document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+      e.target.classList.add('active', 'bg-blue-100', 'text-blue-600');
 
-        // Capabilities mapping
-        function mapToCapabilities(config) {
-            return {
-                recolorables: [],
-                borderables: [],
-                fontEditable: undefined,
-                fontSizeable: undefined
-            };
-        }
+      // โหลดข้อมูลตามแท็บ
+      if (tabName === 'review') {
+        loadReviewTab();
+      } else if (tabName === 'dashboard') {
+        loadDashboardTab();
+      }
+    }
 
-        // Edit panel values mapping
-        function mapToEditPanelValues(config) {
-            return new Map([
-                ["school_name", config.school_name || defaultConfig.school_name],
-                ["department_name", config.department_name || defaultConfig.department_name],
-                ["deadline_day", config.deadline_day || defaultConfig.deadline_day]
-            ]);
-        }
+    // โหลด Review Tab
+    async function loadReviewTab() {
+      await loadAllPlans();
+      renderReviewTab();
+    }
 
-        // Setup event listeners
-        function setupEventListeners() {
-            // Login form
-            document.getElementById('login-form').addEventListener('submit', handleLogin);
-            document.getElementById('logout-btn').addEventListener('click', handleLogout);
+    // โหลด Dashboard Tab
+    async function loadDashboardTab() {
+      await loadAllPlans();
+      renderDashboard();
+    }
 
-            // Tab navigation
-            document.getElementById('tab-upload').addEventListener('click', () => showTab('upload'));
-            document.getElementById('tab-review').addEventListener('click', () => showTab('review'));
-            document.getElementById('tab-dashboard').addEventListener('click', () => showTab('dashboard'));
-            document.getElementById('tab-settings').addEventListener('click', () => showTab('settings'));
+    // แสดง Review Tab
+    function renderReviewTab() {
+      const container = document.getElementById('review-container');
+      let html = '';
 
-            // Upload form
-            document.getElementById('upload-form').addEventListener('submit', handleUpload);
-            document.getElementById('file-drop-zone').addEventListener('click', () => {
-                document.getElementById('pdf-file').click();
-            });
-            document.getElementById('pdf-file').addEventListener('change', handleFileSelect);
-
-            // Review modal
-            document.getElementById('close-review-modal').addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                closeReviewModal();
-            });
-            document.getElementById('approve-btn').addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleReview('อนุมัติแล้ว');
-            });
-            document.getElementById('revision-btn').addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleReview('แก้ไข');
-            });
-            document.getElementById('reject-btn').addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleReview('ไม่อนุมัติ');
-            });
-
-            // Search and filter
-            document.getElementById('search-teacher').addEventListener('input', filterPlans);
-            document.getElementById('filter-status').addEventListener('change', filterPlans);
-            
-            // Submission table filters
-            document.getElementById('search-submission-teacher').addEventListener('input', filterSubmissionTable);
-            document.getElementById('filter-submission-status').addEventListener('change', filterSubmissionTable);
-
-            // Settings form
-            document.getElementById('settings-form').addEventListener('submit', handleSettingsUpdate);
-        }
-
-        // Authentication functions
-        function checkLoginStatus() {
-            const savedUser = localStorage.getItem('currentUser');
-            const savedRole = localStorage.getItem('currentRole');
-            
-            if (savedUser && savedRole) {
-                currentUser = savedUser;
-                currentRole = savedRole;
-                showMainApp();
-            } else {
-                showLoginModal();
-            }
-        }
-
-        async function handleLogin(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const role = document.getElementById('user-role').value;
-
-            // Simple authentication (in real app, this would be server-side)
-            const validCredentials = {
-                'teacher': '123',
-                'academic': '123',
-                'admin': '123'
-            };
-
-            if (validCredentials[role] === password) {
-                currentUser = username;
-                currentRole = role;
-                
-                localStorage.setItem('currentUser', currentUser);
-                localStorage.setItem('currentRole', currentRole);
-                
-                showMainApp();
-                showToast('เข้าสู่ระบบสำเร็จ', 'success');
-            } else {
-                showToast('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', 'error');
-            }
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('currentRole');
-            currentUser = null;
-            currentRole = null;
-            showLoginModal();
-            showToast('ออกจากระบบแล้ว', 'info');
-        }
-
-        function showLoginModal() {
-            document.getElementById('login-modal').classList.remove('hidden');
-            document.getElementById('main-content').classList.add('hidden');
-        }
-
-        function showMainApp() {
-            document.getElementById('login-modal').classList.add('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
-            
-            // Update user info
-            document.getElementById('current-user').textContent = getRoleDisplayName(currentRole);
-            
-            // Show appropriate tabs based on role
-            updateTabVisibility();
-            
-            // Show default tab
-            showTab('upload');
-            
-            // Update current deadline
-            updateCurrentDeadline();
-        }
-
-        function getRoleDisplayName(role) {
-            const roleNames = {
-                'teacher': 'ครูผู้สอน',
-                'academic': 'หัวหน้างานวิชาการ',
-                'admin': 'ผู้บริหาร'
-            };
-            return roleNames[role] || role;
-        }
-
-        function updateTabVisibility() {
-            const reviewTab = document.getElementById('tab-review');
-            const settingsTab = document.getElementById('tab-settings');
-            
-            if (currentRole === 'teacher') {
-                reviewTab.style.display = 'none';
-                settingsTab.style.display = 'none';
-            } else {
-                reviewTab.style.display = 'block';
-                settingsTab.style.display = currentRole === 'admin' ? 'block' : 'none';
-            }
-        }
-
-        // Tab navigation
-        function showTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.add('hidden');
-            });
-            
-            // Remove active class from all tab buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-blue-100', 'text-blue-600');
-                btn.classList.add('text-gray-600', 'hover:text-blue-600');
-            });
-            
-            // Show selected tab
-            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
-            
-            // Add active class to selected tab button
-            const activeBtn = document.getElementById(`tab-${tabName}`);
-            activeBtn.classList.add('active', 'bg-blue-100', 'text-blue-600');
-            activeBtn.classList.remove('text-gray-600', 'hover:text-blue-600');
-            
-            // Load tab-specific data
-            if (tabName === 'dashboard') {
-                updateDashboard();
-            } else if (tabName === 'review') {
-                loadReviewPlans();
-            }
-        }
-
-        // File handling
-        function handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) {
-                if (file.type !== 'application/pdf') {
-                    showToast('กรุณาเลือกไฟล์ PDF เท่านั้น', 'error');
-                    return;
-                }
-                
-                document.getElementById('file-drop-zone').classList.add('hidden');
-                document.getElementById('file-selected').classList.remove('hidden');
-                document.getElementById('selected-file-name').textContent = file.name;
-            }
-        }
-
-        // Upload handling
-        async function handleUpload(e) {
-            e.preventDefault();
-            
-            if (isLoading) {
-                console.log('Already uploading, please wait...');
-                return;
-            }
-            
-            console.log('Starting upload process...');
-            
-            const teacherName = document.getElementById('teacher-name').value.trim();
-            const subjectGroup = document.getElementById('subject-group').value;
-            
-            console.log('Teacher name:', teacherName);
-            console.log('Subject group:', subjectGroup);
-            
-            if (!teacherName || !subjectGroup) {
-                showToast('กรุณากรอกชื่อครูและกลุ่มสาระ', 'error');
-                return;
-            }
-            
-            // Check Data SDK availability first
-            if (!window.dataSdk) {
-                console.error('Data SDK not available');
-                showToast('ระบบไม่พร้อมใช้งาน กรุณารีเฟรชหน้าเว็บแล้วลองใหม่', 'error');
-                return;
-            }
-            
-            // Check if we've reached the limit
-            if (allPlans.length >= 999) {
-                showToast('ระบบเต็ม ไม่สามารถส่งแผนเพิ่มได้ กรุณาติดต่อผู้ดูแลระบบ', 'error');
-                return;
-            }
-            
-            // Collect all plan data
-            const plansToSubmit = [];
-            const submittedCodes = new Set();
-            
-            console.log('Collecting plan data...');
-            
-            for (let i = 1; i <= 5; i++) {
-                const subjectCode = document.getElementById(`subject-code-${i}`).value.trim();
-                const subjectName = document.getElementById(`subject-name-${i}`).value.trim();
-                const fileInput = document.getElementById(`pdf-file-${i}`);
-                
-                console.log(`Plan ${i}:`, { subjectCode, subjectName, hasFile: !!fileInput.files[0] });
-                
-                if (subjectCode && subjectName && fileInput.files[0]) {
-                    // Validate file type
-                    if (fileInput.files[0].type !== 'application/pdf') {
-                        showToast(`ไฟล์แผนที่ ${i} ต้องเป็น PDF เท่านั้น`, 'error');
-                        return;
-                    }
-                    
-                    // Check for duplicate subject codes
-                    if (submittedCodes.has(subjectCode)) {
-                        showToast(`รหัสวิชา "${subjectCode}" ซ้ำกัน กรุณาตรวจสอบ`, 'error');
-                        return;
-                    }
-                    
-                    // Check if this subject code already exists in database
-                    const existingPlan = allPlans.find(plan => 
-                        plan.subject_code === subjectCode && 
-                        plan.teacher_name === teacherName &&
-                        isCurrentMonth(plan.submit_date)
-                    );
-                    
-                    if (existingPlan) {
-                        showToast(`รหัสวิชา "${subjectCode}" ถูกส่งแล้วในรอบนี้`, 'error');
-                        return;
-                    }
-                    
-                    submittedCodes.add(subjectCode);
-                    
-                    const planData = {
-                        id: generateId(),
-                        teacher_name: teacherName,
-                        subject_group: subjectGroup,
-                        subject_code: subjectCode,
-                        subject_name: subjectName,
-                        plan_title: `แผนการจัดการเรียนรู้ที่ ${i} - ${subjectName}`,
-                        file_name: fileInput.files[0].name,
-                        submit_date: new Date().toISOString(),
-                        status: 'รอตรวจ',
-                        reviewer_comment: '',
-                        approve_comment: '',
-                        deadline: getCurrentDeadline(),
-                        user_role: currentRole || 'teacher',
-                        is_late: isLateSubmission()
-                    };
-                    
-                    plansToSubmit.push(planData);
-                    console.log(`Added plan ${i}:`, planData);
-                }
-            }
-            
-            if (plansToSubmit.length === 0) {
-                showToast('กรุณากรอกข้อมูลอย่างน้อย 1 แผน (ต้องมีรหัสวิชา ชื่อวิชา และไฟล์ PDF)', 'error');
-                return;
-            }
-            
-            // Check if adding these plans would exceed the limit
-            if (allPlans.length + plansToSubmit.length > 999) {
-                showToast(`ไม่สามารถส่งได้ เนื่องจากจะเกินขีดจำกัด 999 แผน (ปัจจุบัน: ${allPlans.length})`, 'error');
-                return;
-            }
-            
-            console.log(`Submitting ${plansToSubmit.length} plans...`);
-            setLoading(true);
-            
-            try {
-                let successCount = 0;
-                let errorCount = 0;
-                const errors = [];
-                
-                for (let i = 0; i < plansToSubmit.length; i++) {
-                    const planData = plansToSubmit[i];
-                    console.log(`Submitting plan ${i + 1}/${plansToSubmit.length}:`, planData);
-                    
-                    try {
-                        // Double check Data SDK availability before each call
-                        if (!window.dataSdk || typeof window.dataSdk.create !== 'function') {
-                            throw new Error('Data SDK create method not available');
-                        }
-                        
-                        const result = await window.dataSdk.create(planData);
-                        console.log(`Plan ${i + 1} result:`, result);
-                        
-                        if (result && result.isOk) {
-                            successCount++;
-                            console.log(`Plan ${i + 1} created successfully`);
-                        } else {
-                            const errorMsg = result?.error?.message || result?.error || 'ไม่ทราบสาเหตุ';
-                            console.error(`Plan ${i + 1} failed:`, errorMsg);
-                            errorCount++;
-                            errors.push(`แผนที่ ${i + 1}: ${errorMsg}`);
-                        }
-                    } catch (createError) {
-                        console.error(`Plan ${i + 1} error:`, createError);
-                        errorCount++;
-                        const errorMsg = createError.message || 'เกิดข้อผิดพลาดไม่ทราบสาเหตุ';
-                        errors.push(`แผนที่ ${i + 1}: ${errorMsg}`);
-                    }
-                    
-                    // Add small delay between requests
-                    if (i < plansToSubmit.length - 1) {
-                        await new Promise(resolve => setTimeout(resolve, 200));
-                    }
-                }
-                
-                console.log(`Upload completed. Success: ${successCount}, Errors: ${errorCount}`);
-                
-                if (successCount > 0) {
-                    const message = errorCount > 0 ? 
-                        `ส่งแผนสำเร็จ ${successCount} แผน (ล้มเหลว ${errorCount} แผน)` :
-                        `ส่งแผนสำเร็จทั้งหมด ${successCount} แผน! 🎉`;
-                    
-                    showToast(message, 'success');
-                    
-                    // Reset form after successful submission
-                    document.getElementById('upload-form').reset();
-                    
-                    // Clear file inputs specifically
-                    for (let i = 1; i <= 5; i++) {
-                        const fileInput = document.getElementById(`pdf-file-${i}`);
-                        if (fileInput) fileInput.value = '';
-                    }
-                    
-                } else {
-                    let errorMessage = 'เกิดข้อผิดพลาดในการส่งแผน';
-                    if (errors.length > 0) {
-                        errorMessage = `เกิดข้อผิดพลาด:\n${errors.slice(0, 3).join('\n')}`;
-                        if (errors.length > 3) {
-                            errorMessage += `\n... และอีก ${errors.length - 3} ข้อผิดพลาด`;
-                        }
-                    }
-                    
-                    showToast(errorMessage, 'error');
-                    console.error('All uploads failed:', errors);
-                }
-                
-            } catch (error) {
-                console.error('Upload process error:', error);
-                showToast(`เกิดข้อผิดพลาดในระบบ: ${error.message || 'ไม่ทราบสาเหตุ'}`, 'error');
-            } finally {
-                setLoading(false);
-                console.log('Upload process completed');
-            }
-        }
-
-        // Review handling
-        let currentReviewPlan = null;
-
-        function openReviewModal(plan) {
-            console.log('Opening review modal for plan:', plan);
-            
-            if (!plan) {
-                console.error('No plan provided to openReviewModal');
-                showToast('ไม่พบข้อมูลแผนที่จะตรวจสอบ', 'error');
-                return;
-            }
-            
-            const modal = document.getElementById('review-modal');
-            const details = document.getElementById('review-plan-details');
-            
-            // Store the plan object globally
-            currentReviewPlan = plan;
-            
-            details.innerHTML = `
-                <div class="bg-gray-50 rounded-lg p-4 space-y-2">
-                    <div><strong>ครูผู้สอน:</strong> ${plan.teacher_name}</div>
-                    <div><strong>กลุ่มสาระ:</strong> ${plan.subject_group}</div>
-                    <div><strong>รหัสวิชา:</strong> ${plan.subject_code}</div>
-                    <div><strong>ชื่อแผน:</strong> ${plan.plan_title}</div>
-                    <div><strong>วันที่ส่ง:</strong> ${formatDate(plan.submit_date)}</div>
-                    <div><strong>สถานะ:</strong> <span class="status-${getStatusClass(plan.status)}">${plan.status}</span></div>
-                    <div><strong>ไฟล์:</strong> ${plan.file_name}</div>
-                    ${plan.is_late ? '<div class="text-red-600"><strong>⚠️ ส่งเกินกำหนด</strong></div>' : ''}
+      if (allPlans.length === 0) {
+        html = '<p class="text-center text-gray-500">ไม่มีแผนการสอนที่ต้องตรวจสอบ</p>';
+      } else {
+        allPlans.forEach(plan => {
+          html += `
+            <div class="bg-white rounded-lg card-shadow p-4">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h4 class="font-semibold text-gray-800">${plan.teacher_name} - ${plan.subject_name}</h4>
+                  <p class="text-sm text-gray-600">สถานะ: <span class="status-${plan.status || 'pending'}">${plan.status || 'รอตรวจ'}</span></p>
                 </div>
-            `;
-            
-            // Clear and set comment
-            const commentField = document.getElementById('review-comment');
-            if (commentField) {
-                commentField.value = plan.reviewer_comment || '';
-            }
-            
-            // Reset button states
-            resetReviewButtons();
-            
-            // Show modal
-            modal.classList.remove('hidden');
-            console.log('Review modal opened successfully');
+                <button class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">ตรวจสอบ</button>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      container.innerHTML = html;
+    }
+
+    // แสดง Dashboard
+    function renderDashboard() {
+      renderStats();
+      renderChart();
+    }
+
+    // แสดงสถิติ
+    function renderStats() {
+      const stats = {
+        total: allPlans.length,
+        approved: allPlans.filter(p => p.status === 'อนุมัติแล้ว').length,
+        pending: allPlans.filter(p => p.status === 'รอตรวจ').length,
+        revision: allPlans.filter(p => p.status === 'แก้ไข').length
+      };
+
+      const container = document.getElementById('stats-container');
+      const statsHtml = `
+        <div class="bg-white rounded-lg card-shadow p-4 text-center">
+          <p class="text-gray-600 text-sm">รวมแผนทั้งหมด</p>
+          <p class="text-3xl font-bold text-blue-600">${stats.total}</p>
+        </div>
+        <div class="bg-white rounded-lg card-shadow p-4 text-center">
+          <p class="text-gray-600 text-sm">อนุมัติแล้ว</p>
+          <p class="text-3xl font-bold text-green-600">${stats.approved}</p>
+        </div>
+        <div class="bg-white rounded-lg card-shadow p-4 text-center">
+          <p class="text-gray-600 text-sm">รอตรวจ</p>
+          <p class="text-3xl font-bold text-yellow-600">${stats.pending}</p>
+        </div>
+        <div class="bg-white rounded-lg card-shadow p-4 text-center">
+          <p class="text-gray-600 text-sm">ต้องแก้ไข</p>
+          <p class="text-3xl font-bold text-orange-600">${stats.revision}</p>
+        </div>
+      `;
+      container.innerHTML = statsHtml;
+    }
+
+    // แสดงกราฟ
+    function renderChart() {
+      const ctx = document.getElementById('status-chart');
+      if (!ctx) return;
+
+      const statuses = {
+        'รอตรวจ': allPlans.filter(p => p.status === 'รอตรวจ').length,
+        'ผ่าน': allPlans.filter(p => p.status === 'ผ่าน').length,
+        'แก้ไข': allPlans.filter(p => p.status === 'แก้ไข').length,
+        'อนุมัติแล้ว': allPlans.filter(p => p.status === 'อนุมัติแล้ว').length
+      };
+
+      if (statusChart) {
+        statusChart.destroy();
+      }
+
+      statusChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(statuses),
+          datasets: [{
+            data: Object.values(statuses),
+            backgroundColor: ['#fbbf24', '#34d399', '#f97316', '#0ea5e9']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' }
+          }
         }
+      });
+    }
 
-        function closeReviewModal() {
-            console.log('Closing review modal');
-            const modal = document.getElementById('review-modal');
-            modal.classList.add('hidden');
-            currentReviewPlan = null;
-            resetReviewButtons();
-            console.log('Review modal closed');
+    // จัดการการบันทึกตั้งค่า
+    function handleSettingsSave(e) {
+      e.preventDefault();
+      settings.deadline_day = parseInt(document.getElementById('deadline-day').value);
+      settings.academic_year = parseInt(document.getElementById('academic-year').value);
+      settings.semester = parseInt(document.getElementById('semester').value);
+      
+      showToast('บันทึกตั้งค่าสำเร็จ', 'success');
+    }
+
+    // แสดงแผนเข้าสู่ระบบ
+    function showLoginPanel() {
+      document.getElementById('login-modal').classList.add('hidden');
+      document.getElementById('main-content').classList.remove('hidden');
+      document.getElementById('current-user').textContent = currentUser;
+    }
+
+    // ออกจากระบบ
+    function handleLogout() {
+      currentUser = null;
+      userRole = null;
+      document.getElementById('login-modal').classList.remove('hidden');
+      document.getElementById('main-content').classList.add('hidden');
+      document.getElementById('login-form').reset();
+      showToast('ออกจากระบบสำเร็จ', 'success');
+    }
+
+    // ฟังก์ชั่นช่วยเหลือ
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => toast.classList.add('show'), 100);
+      
+      const hideDelay = type === 'error' ? 5000 : 3000;
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, hideDelay);
+    }
+
+    function setLoading(loading) {
+      isLoading = loading;
+      const submitBtn = document.getElementById('submit-btn');
+      if (submitBtn) {
+        if (loading) {
+          submitBtn.classList.add('loading');
+          submitBtn.textContent = 'กำลังส่ง...';
+        } else {
+          submitBtn.classList.remove('loading');
+          submitBtn.textContent = 'ส่งแผนการสอน';
         }
+      }
+    }
 
-        function resetReviewButtons() {
-            const approveBtn = document.getElementById('approve-btn');
-            const revisionBtn = document.getElementById('revision-btn');
-            const rejectBtn = document.getElementById('reject-btn');
-            
-            if (approveBtn && revisionBtn && rejectBtn) {
-                [approveBtn, revisionBtn, rejectBtn].forEach(btn => {
-                    btn.disabled = false;
-                    btn.style.opacity = '1';
-                    btn.style.cursor = 'pointer';
-                    btn.style.pointerEvents = 'auto';
-                    btn.removeAttribute('disabled');
-                });
-                
-                approveBtn.innerHTML = '✓ อนุมัติ';
-                revisionBtn.innerHTML = '↩ ส่งกลับแก้ไข';
-                rejectBtn.innerHTML = '✗ ไม่อนุมัติ';
-                
-                // Re-add onclick handlers to ensure they work
-                approveBtn.onclick = () => handleReview('อนุมัติแล้ว');
-                revisionBtn.onclick = () => handleReview('แก้ไข');
-                rejectBtn.onclick = () => handleReview('ไม่อนุมัติ');
-            }
-        }
-
-        async function handleReview(newStatus) {
-            console.log('handleReview called with status:', newStatus);
-            
-            if (isLoading) {
-                console.log('Already loading, please wait...');
-                return;
-            }
-            
-            if (!currentReviewPlan) {
-                console.error('No plan selected for review');
-                showToast('ไม่พบข้อมูลแผนที่จะตรวจสอบ', 'error');
-                return;
-            }
-            
-            if (!window.dataSdk) {
-                console.error('Data SDK not available');
-                showToast('ระบบไม่พร้อมใช้งาน กรุณาลองใหม่อีกครั้ง', 'error');
-                return;
-            }
-            
-            const commentField = document.getElementById('review-comment');
-            const comment = commentField ? commentField.value.trim() : '';
-            
-            console.log('Review data:', {
-                plan: currentReviewPlan,
-                newStatus,
-                comment
-            });
-            
-            // Show loading state immediately
-            setReviewLoading(true, newStatus);
-            
-            try {
-                console.log('Starting review process...');
-                
-                // Create updated plan object with all required fields
-                const updatedPlan = {
-                    ...currentReviewPlan,
-                    status: newStatus,
-                    reviewer_comment: comment,
-                    approve_comment: currentRole === 'admin' ? comment : (currentReviewPlan.approve_comment || ''),
-                    review_date: new Date().toISOString()
-                };
-                
-                console.log('Updating plan with data:', updatedPlan);
-                
-                // Call the Data SDK update method
-                const result = await window.dataSdk.update(updatedPlan);
-                
-                console.log('SDK update result:', result);
-                
-                if (result.isOk) {
-                    const statusText = newStatus === 'อนุมัติแล้ว' ? 'อนุมัติ' : 
-                                     newStatus === 'แก้ไข' ? 'ส่งกลับแก้ไข' : 'ไม่อนุมัติ';
-                    
-                    showToast(`${statusText}แผนสำเร็จ! 🎉`, 'success');
-                    
-                    // Close modal after a short delay
-                    setTimeout(() => {
-                        closeReviewModal();
-                    }, 1500);
-                    
-                } else {
-                    console.error('Update failed:', result.error);
-                    const errorMessage = result.error?.message || result.error || 'ไม่ทราบสาเหตุ';
-                    showToast(`เกิดข้อผิดพลาด: ${errorMessage}`, 'error');
-                }
-                
-            } catch (error) {
-                console.error('Review process error:', error);
-                showToast(`เกิดข้อผิดพลาดในการอัปเดต: ${error.message}`, 'error');
-            } finally {
-                // Always restore button states
-                setReviewLoading(false);
-                console.log('Review process completed');
-            }
-        }
-
-        function setReviewLoading(loading, status = null) {
-            const approveBtn = document.getElementById('approve-btn');
-            const revisionBtn = document.getElementById('revision-btn');
-            const rejectBtn = document.getElementById('reject-btn');
-            
-            if (!approveBtn || !revisionBtn || !rejectBtn) {
-                console.error('Review buttons not found');
-                return;
-            }
-            
-            if (loading) {
-                [approveBtn, revisionBtn, rejectBtn].forEach(btn => {
-                    btn.disabled = true;
-                    btn.style.opacity = '0.6';
-                    btn.style.cursor = 'not-allowed';
-                    btn.style.pointerEvents = 'none';
-                    btn.onclick = null; // Remove click handlers during loading
-                });
-                
-                if (status === 'อนุมัติแล้ว') {
-                    approveBtn.innerHTML = '⏳ กำลังอนุมัติ...';
-                } else if (status === 'แก้ไข') {
-                    revisionBtn.innerHTML = '⏳ กำลังส่งกลับ...';
-                } else if (status === 'ไม่อนุมัติ') {
-                    rejectBtn.innerHTML = '⏳ กำลังประมวลผล...';
-                }
-            } else {
-                resetReviewButtons();
-            }
-        }
-
-        // Settings handling
-        async function handleSettingsUpdate(e) {
-            e.preventDefault();
-            
-            if (window.elementSdk) {
-                const deadlineDay = document.getElementById('deadline-setting').value;
-                const maxPlans = document.getElementById('max-plans-setting').value;
-                
-                await window.elementSdk.setConfig({
-                    deadline_day: deadlineDay
-                });
-                
-                settings.max_plans = parseInt(maxPlans);
-                showToast('บันทึกการตั้งค่าสำเร็จ', 'success');
-            }
-        }
-
-        // UI update functions
-        function updateUI() {
-            updateMyPlansList();
-            loadReviewPlans();
-            updateUploadCount();
-        }
-
-        function updateMyPlansList() {
-            const container = document.getElementById('my-plans-list');
-            const myPlans = allPlans.filter(plan => 
-                currentRole === 'teacher' ? 
-                plan.teacher_name === currentUser : 
-                true
-            );
-            
-            if (myPlans.length === 0) {
-                container.innerHTML = '<div class="text-center text-gray-500 py-8">ยังไม่มีแผนการสอน</div>';
-                return;
-            }
-            
-            container.innerHTML = myPlans.map(plan => `
-                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <div class="flex items-center justify-between">
-                        <div class="flex-1">
-                            <h4 class="font-semibold text-gray-800">${plan.plan_title}</h4>
-                            <p class="text-sm text-gray-600">${plan.subject_group} (${plan.subject_code})</p>
-                            <p class="text-xs text-gray-500">ส่งเมื่อ: ${formatDate(plan.submit_date)}</p>
-                            ${plan.reviewer_comment ? `<p class="text-xs text-blue-600 mt-1">หมายเหตุ: ${plan.reviewer_comment}</p>` : ''}
-                        </div>
-                        <div class="text-right">
-                            <div class="flex items-center space-x-2 mb-2">
-                                <button onclick="viewPDF('${plan.file_name}')" 
-                                        class="px-2 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600 transition-colors">
-                                    📄 ดูไฟล์
-                                </button>
-                                <span class="inline-block px-3 py-1 rounded-full text-xs font-medium status-${getStatusClass(plan.status)}">
-                                    ${plan.status}
-                                </span>
-                            </div>
-                            ${plan.is_late ? '<div class="text-xs text-red-600 mt-1">เกินกำหนด</div>' : ''}
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function loadReviewPlans() {
-            const container = document.getElementById('review-plans-list');
-            let plansToReview = [];
-            
-            if (currentRole === 'academic') {
-                plansToReview = allPlans.filter(plan => plan.status === 'รอตรวจ');
-            } else if (currentRole === 'admin') {
-                plansToReview = allPlans.filter(plan => ['รอตรวจ', 'ผ่าน'].includes(plan.status));
-            }
-            
-            if (plansToReview.length === 0) {
-                container.innerHTML = '<div class="text-center text-gray-500 py-8">ไม่มีแผนที่ต้องตรวจสอบ</div>';
-                return;
-            }
-            
-            container.innerHTML = plansToReview.map(plan => `
-                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <div class="flex items-center justify-between">
-                        <div class="flex-1">
-                            <h4 class="font-semibold text-gray-800">${plan.plan_title}</h4>
-                            <p class="text-sm text-gray-600">${plan.teacher_name} - ${plan.subject_group}</p>
-                            <p class="text-xs text-gray-500">ส่งเมื่อ: ${formatDate(plan.submit_date)}</p>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <span class="inline-block px-3 py-1 rounded-full text-xs font-medium status-${getStatusClass(plan.status)}">
-                                ${plan.status}
-                            </span>
-                            <div class="flex space-x-2">
-                                <button onclick="viewPDF('${plan.file_name}')" 
-                                        class="px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm">
-                                    📄 ดูไฟล์
-                                </button>
-                                <button onclick="reviewPlan('${plan.__backendId}')" 
-                                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-                                    ตรวจสอบ
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function updateDashboard() {
-            // Update statistics
-            document.getElementById('total-plans').textContent = allPlans.length;
-            document.getElementById('completed-teachers').textContent = getUniqueTeachers().length;
-            document.getElementById('late-plans').textContent = allPlans.filter(p => p.is_late).length;
-            document.getElementById('pending-plans').textContent = allPlans.filter(p => p.status === 'รอตรวจ').length;
-            
-            // Update submission table
-            updateSubmissionTable();
-            
-            // Update chart
-            updateSubjectChart();
-            
-            // Update recent activities
-            updateRecentActivities();
-        }
-
-        let subjectChart = null;
-
-        function updateSubjectChart() {
-            const ctx = document.getElementById('subject-chart');
-            if (!ctx) return;
-            
-            // Destroy existing chart if it exists
-            if (subjectChart) {
-                subjectChart.destroy();
-                subjectChart = null;
-            }
-            
-            const subjectGroups = {};
-            
-            allPlans.forEach(plan => {
-                subjectGroups[plan.subject_group] = (subjectGroups[plan.subject_group] || 0) + 1;
-            });
-            
-            // Only create chart if there's data
-            if (Object.keys(subjectGroups).length > 0) {
-                subjectChart = new Chart(ctx.getContext('2d'), {
-                    type: 'bar',
-                    data: {
-                        labels: Object.keys(subjectGroups),
-                        datasets: [{
-                            label: 'จำนวนแผน',
-                            data: Object.values(subjectGroups),
-                            backgroundColor: 'rgba(59, 130, 246, 0.5)',
-                            borderColor: 'rgba(59, 130, 246, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
-        function updateRecentActivities() {
-            const container = document.getElementById('recent-activities');
-            const recentPlans = allPlans
-                .sort((a, b) => new Date(b.submit_date) - new Date(a.submit_date))
-                .slice(0, 5);
-            
-            if (recentPlans.length === 0) {
-                container.innerHTML = '<div class="text-center text-gray-500">ยังไม่มีกิจกรรม</div>';
-                return;
-            }
-            
-            container.innerHTML = recentPlans.map(plan => `
-                <div class="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0">
-                    <div>
-                        <span class="font-medium">${plan.teacher_name}</span>
-                        <span class="text-gray-600">ส่ง "${plan.plan_title}"</span>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-xs text-gray-500">${formatDate(plan.submit_date)}</div>
-                        <span class="inline-block px-2 py-1 rounded text-xs status-${getStatusClass(plan.status)}">
-                            ${plan.status}
-                        </span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Submission table functions
-        function updateSubmissionTable() {
-            const teacherStats = getTeacherSubmissionStats();
-            renderSubmissionTable(teacherStats);
-        }
-
-        function getTeacherSubmissionStats() {
-            const teacherMap = new Map();
-            
-            // Get all unique teachers from plans
-            allPlans.forEach(plan => {
-                const teacherName = plan.teacher_name;
-                if (!teacherMap.has(teacherName)) {
-                    teacherMap.set(teacherName, {
-                        name: teacherName,
-                        subjectGroup: plan.subject_group,
-                        plans: [],
-                        totalPlans: 0,
-                        latePlans: 0,
-                        lastSubmissionDate: null,
-                        submissionStatus: 'notsubmitted'
-                    });
-                }
-                
-                const teacher = teacherMap.get(teacherName);
-                teacher.plans.push(plan);
-                teacher.totalPlans++;
-                
-                if (plan.is_late) {
-                    teacher.latePlans++;
-                }
-                
-                // Update last submission date
-                const submissionDate = new Date(plan.submit_date);
-                if (!teacher.lastSubmissionDate || submissionDate > teacher.lastSubmissionDate) {
-                    teacher.lastSubmissionDate = submissionDate;
-                }
-            });
-            
-            // Calculate submission status for each teacher
-            teacherMap.forEach((teacher, name) => {
-                if (teacher.totalPlans === 0) {
-                    teacher.submissionStatus = 'notsubmitted';
-                } else if (teacher.latePlans > 0) {
-                    teacher.submissionStatus = 'late';
-                } else {
-                    teacher.submissionStatus = 'ontime';
-                }
-            });
-            
-            return Array.from(teacherMap.values());
-        }
-
-        function renderSubmissionTable(teacherStats) {
-            const tbody = document.getElementById('submission-table-body');
-            const totalTeachersSpan = document.getElementById('total-teachers');
-            const showingCountSpan = document.getElementById('showing-count');
-            
-            if (teacherStats.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="px-4 py-8 text-center text-gray-500">
-                            ยังไม่มีข้อมูลการส่งงาน
-                        </td>
-                    </tr>
-                `;
-                totalTeachersSpan.textContent = '0';
-                showingCountSpan.textContent = '0';
-                return;
-            }
-            
-            tbody.innerHTML = teacherStats.map(teacher => {
-                const progressPercentage = Math.round((teacher.totalPlans / 5) * 100);
-                const statusBadge = getSubmissionStatusBadge(teacher.submissionStatus);
-                const lastSubmissionText = teacher.lastSubmissionDate ? 
-                    formatDate(teacher.lastSubmissionDate.toISOString()) : 
-                    'ยังไม่ส่ง';
-                
-                return `
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-3">
-                            <div class="font-medium text-gray-900">${teacher.name}</div>
-                        </td>
-                        <td class="px-4 py-3 text-center text-gray-600">
-                            ${teacher.subjectGroup}
-                        </td>
-                        <td class="px-4 py-3 text-center">
-                            <span class="font-semibold">${teacher.totalPlans}</span>/5
-                        </td>
-                        <td class="px-4 py-3 text-center text-gray-600">
-                            ${lastSubmissionText}
-                        </td>
-                        <td class="px-4 py-3 text-center">
-                            ${statusBadge}
-                        </td>
-                        <td class="px-4 py-3 text-center">
-                            <div class="flex items-center justify-center space-x-2">
-                                <div class="w-16 bg-gray-200 rounded-full h-2">
-                                    <div class="h-2 rounded-full ${getProgressBarColor(teacher.submissionStatus)}" 
-                                         style="width: ${progressPercentage}%"></div>
-                                </div>
-                                <span class="text-xs text-gray-600">${progressPercentage}%</span>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-            
-            totalTeachersSpan.textContent = teacherStats.length;
-            showingCountSpan.textContent = teacherStats.length;
-        }
-
-        function getSubmissionStatusBadge(status) {
-            const badges = {
-                'ontime': '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"><div class="w-2 h-2 bg-green-500 rounded-full mr-1"></div>ส่งทันเวลา</span>',
-                'late': '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"><div class="w-2 h-2 bg-red-500 rounded-full mr-1"></div>ส่งล่าช้า</span>',
-                'notsubmitted': '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"><div class="w-2 h-2 bg-gray-400 rounded-full mr-1"></div>ยังไม่ส่ง</span>'
-            };
-            return badges[status] || badges['notsubmitted'];
-        }
-
-        function getProgressBarColor(status) {
-            const colors = {
-                'ontime': 'bg-green-500',
-                'late': 'bg-red-500',
-                'notsubmitted': 'bg-gray-400'
-            };
-            return colors[status] || 'bg-gray-400';
-        }
-
-        function filterSubmissionTable() {
-            const searchTerm = document.getElementById('search-submission-teacher').value.toLowerCase();
-            const statusFilter = document.getElementById('filter-submission-status').value;
-            
-            let teacherStats = getTeacherSubmissionStats();
-            
-            // Apply search filter
-            if (searchTerm) {
-                teacherStats = teacherStats.filter(teacher => 
-                    teacher.name.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            // Apply status filter
-            if (statusFilter) {
-                teacherStats = teacherStats.filter(teacher => 
-                    teacher.submissionStatus === statusFilter
-                );
-            }
-            
-            renderSubmissionTable(teacherStats);
-            
-            // Update showing count
-            document.getElementById('showing-count').textContent = teacherStats.length;
-        }
-
-        function updateUploadCount() {
-            const teacherName = document.getElementById('teacher-name').value;
-            if (!teacherName) return;
-            
-            const currentUserPlans = allPlans.filter(plan => 
-                plan.teacher_name === teacherName &&
-                isCurrentMonth(plan.submit_date)
-            );
-            
-            document.getElementById('upload-count').textContent = currentUserPlans.length;
-            
-            // Update approved/pending counts
-            document.getElementById('approved-count').textContent = 
-                currentUserPlans.filter(p => p.status === 'อนุมัติแล้ว').length;
-            document.getElementById('pending-count').textContent = 
-                currentUserPlans.filter(p => p.status === 'รอตรวจ').length;
-        }
-
-        function updateCurrentDeadline() {
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-            const deadline = new Date(currentYear, currentMonth, settings.deadline_day);
-            
-            document.getElementById('current-deadline').textContent = formatDate(deadline.toISOString());
-        }
-
-        // Filter functions
-        function filterPlans() {
-            const searchTerm = document.getElementById('search-teacher').value.toLowerCase();
-            const statusFilter = document.getElementById('filter-status').value;
-            
-            let filteredPlans = allPlans;
-            
-            if (searchTerm) {
-                filteredPlans = filteredPlans.filter(plan => 
-                    plan.teacher_name.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            if (statusFilter) {
-                filteredPlans = filteredPlans.filter(plan => plan.status === statusFilter);
-            }
-            
-            // Update review plans list with filtered data
-            const container = document.getElementById('review-plans-list');
-            if (filteredPlans.length === 0) {
-                container.innerHTML = '<div class="text-center text-gray-500 py-8">ไม่พบข้อมูลที่ค้นหา</div>';
-                return;
-            }
-            
-            container.innerHTML = filteredPlans.map(plan => `
-                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <div class="flex items-center justify-between">
-                        <div class="flex-1">
-                            <h4 class="font-semibold text-gray-800">${plan.plan_title}</h4>
-                            <p class="text-sm text-gray-600">${plan.teacher_name} - ${plan.subject_group}</p>
-                            <p class="text-xs text-gray-500">ส่งเมื่อ: ${formatDate(plan.submit_date)}</p>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <span class="inline-block px-3 py-1 rounded-full text-xs font-medium status-${getStatusClass(plan.status)}">
-                                ${plan.status}
-                            </span>
-                            <div class="flex space-x-2">
-                                <button onclick="viewPDF('${plan.file_name}')" 
-                                        class="px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm">
-                                    📄 ดูไฟล์
-                                </button>
-                                <button onclick="reviewPlan('${plan.__backendId}')" 
-                                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-                                    ตรวจสอบ
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // PDF viewing function
-        function viewPDF(fileName) {
-            // Create a modal to show PDF preview
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-            modal.innerHTML = `
-                <div class="bg-white rounded-xl p-6 max-w-4xl w-full mx-4 card-shadow max-h-[90vh] overflow-y-auto">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-bold text-gray-800">ดูไฟล์ PDF: ${fileName}</h3>
-                        <button onclick="this.closest('.fixed').remove()" class="text-gray-500 hover:text-gray-700">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    
-                    <div class="bg-gray-100 rounded-lg p-8 text-center">
-                        <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg class="w-12 h-12 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
-                            </svg>
-                        </div>
-                        <h4 class="text-lg font-semibold text-gray-800 mb-2">ไฟล์ PDF: ${fileName}</h4>
-                        <p class="text-gray-600 mb-4">ในระบบจริง ไฟล์ PDF จะแสดงที่นี่</p>
-                        <div class="bg-white rounded-lg p-4 border-2 border-dashed border-gray-300 mb-4">
-                            <p class="text-sm text-gray-500">📄 เนื้อหาแผนการจัดการเรียนรู้</p>
-                            <p class="text-sm text-gray-500">📋 วัตถุประสงค์การเรียนรู้</p>
-                            <p class="text-sm text-gray-500">📚 กิจกรรมการเรียนการสอน</p>
-                            <p class="text-sm text-gray-500">📊 การวัดและประเมินผล</p>
-                        </div>
-                        <div class="flex justify-center space-x-4">
-                            <button onclick="downloadPDF('${fileName}')" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-                                💾 ดาวน์โหลด
-                            </button>
-                            <button onclick="printPDF('${fileName}')" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
-                                🖨️ พิมพ์
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-        }
-
-        function downloadPDF(fileName) {
-            // In a real system, this would download the actual PDF file
-            showToast(`กำลังดาวน์โหลดไฟล์ ${fileName}`, 'info');
-            
-            // Simulate download
-            const link = document.createElement('a');
-            link.href = '#';
-            link.download = fileName;
-            link.textContent = 'Download';
-            link.style.display = 'none';
-            document.body.appendChild(link);
-            
-            setTimeout(() => {
-                showToast(`ดาวน์โหลด ${fileName} สำเร็จ`, 'success');
-                document.body.removeChild(link);
-            }, 1000);
-        }
-
-        function printPDF(fileName) {
-            // In a real system, this would open print dialog for the PDF
-            showToast(`กำลังเตรียมพิมพ์ไฟล์ ${fileName}`, 'info');
-            
-            setTimeout(() => {
-                showToast('เปิดหน้าต่างพิมพ์แล้ว', 'success');
-            }, 500);
-        }
-
-        // Helper function for review button
-        function reviewPlan(planId) {
-            console.log('reviewPlan called with ID:', planId);
-            const plan = allPlans.find(p => p.__backendId === planId);
-            if (plan) {
-                openReviewModal(plan);
-            } else {
-                console.error('Plan not found with ID:', planId);
-                showToast('ไม่พบข้อมูลแผนที่จะตรวจสอบ', 'error');
-            }
-        }
-
-        // Utility functions
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
-        }
-
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('th-TH', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
-
-        function getStatusClass(status) {
-            const statusMap = {
-                'รอตรวจ': 'pending',
-                'ผ่าน': 'approved',
-                'แก้ไข': 'revision',
-                'อนุมัติแล้ว': 'final',
-                'ไม่อนุมัติ': 'late'
-            };
-            return statusMap[status] || 'pending';
-        }
-
-        function isCurrentMonth(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
-        }
-
-        function isLateSubmission() {
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-            const deadline = new Date(currentYear, currentMonth, settings.deadline_day);
-            
-            return now > deadline;
-        }
-
-        function getCurrentDeadline() {
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-            const deadline = new Date(currentYear, currentMonth, settings.deadline_day);
-            
-            return deadline.toISOString();
-        }
-
-        function getUniqueTeachers() {
-            const teachers = new Set();
-            allPlans.forEach(plan => teachers.add(plan.teacher_name));
-            return Array.from(teachers);
-        }
-
-        function setLoading(loading) {
-            isLoading = loading;
-            const submitBtn = document.getElementById('submit-btn');
-            const reviewModal = document.getElementById('review-modal');
-            
-            if (loading) {
-                submitBtn.classList.add('loading');
-                submitBtn.textContent = 'กำลังส่ง...';
-                reviewModal.classList.add('loading');
-            } else {
-                submitBtn.classList.remove('loading');
-                submitBtn.textContent = 'ส่งแผนการสอน';
-                reviewModal.classList.remove('loading');
-            }
-        }
-
-        function showToast(message, type = 'info') {
-            // Remove existing toasts first
-            const existingToasts = document.querySelectorAll('.toast');
-            existingToasts.forEach(toast => {
-                if (toast.parentNode) {
-                    toast.parentNode.removeChild(toast);
-                }
-            });
-            
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            
-            // Handle multiline messages
-            if (message.includes('\n')) {
-                const lines = message.split('\n');
-                toast.innerHTML = lines.map(line => `<div>${line}</div>`).join('');
-            } else {
-                toast.textContent = message;
-            }
-            
-            document.body.appendChild(toast);
-            
-            setTimeout(() => toast.classList.add('show'), 100);
-            
-            // Auto-hide after 5 seconds for errors, 3 seconds for others
-            const hideDelay = type === 'error' ? 5000 : 3000;
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => {
-                    if (toast.parentNode) {
-                        toast.parentNode.removeChild(toast);
-                    }
-                }, 300);
-            }, hideDelay);
-        }
-
-        // Initialize app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initApp);
-    </script>
+    // เริ่มต้นเมื่อ DOM โหลดเสร็จ
+    document.addEventListener('DOMContentLoaded', initApp);
+  </script>
+ </body>
 </html>
