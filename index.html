@@ -275,33 +275,71 @@
     }
 
     // แสดงแผนฟอร์ม
+    let currentPlans = 1;
+    const MAX_PLANS = 5;
+    const MIN_PLANS = 1;
+
     function renderPlansForm() {
       const container = document.getElementById('plans-container');
       let html = '';
       
-      for (let i = 1; i <= 5; i++) {
+      for (let i = 1; i <= currentPlans; i++) {
         html += `
           <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <h4 class="font-semibold text-blue-800 mb-3">${i}. แผนการจัดการเรียนรู้ที่ ${i}</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">รหัสวิชา</label>
-                <input type="text" id="subject-code-${i}" class="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="เช่น ว21101" required>
+                <input type="text" class="subject-code w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="เช่น ว21101" data-plan="${i}" required>
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">ชื่อวิชา</label>
-                <input type="text" id="subject-name-${i}" class="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="เช่น วิทยาศาสตร์ ม.1" required>
+                <input type="text" class="subject-name w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="เช่น วิทยาศาสตร์ ม.1" data-plan="${i}" required>
               </div>
               <div class="md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-2">ไฟล์แนบ (PDF เท่านั้น)</label>
-                <input type="file" id="pdf-file-${i}" accept=".pdf" class="w-full px-3 py-2 border border-gray-300 rounded-lg" required>
+                <input type="file" class="pdf-file w-full px-3 py-2 border border-gray-300 rounded-lg" accept=".pdf" data-plan="${i}" required>
               </div>
             </div>
           </div>
         `;
       }
       
+      html += `
+        <div class="flex gap-3 mt-6 mb-6">
+          <button type="button" id="add-plan-btn" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+            ➕ เพิ่มแผน
+          </button>
+          <button type="button" id="remove-plan-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+            ➖ ลบแผน
+          </button>
+          <span class="px-4 py-2 bg-gray-100 rounded-lg">แผนทั้งหมด: <strong>${currentPlans}</strong>/5</span>
+        </div>
+      `;
+      
       container.innerHTML = html;
+
+      // เพิ่ม event listeners ให้ปุ่ม
+      document.getElementById('add-plan-btn').addEventListener('click', addPlan);
+      document.getElementById('remove-plan-btn').addEventListener('click', removePlan);
+    }
+
+    function addPlan() {
+      if (currentPlans < MAX_PLANS) {
+        currentPlans++;
+        renderPlansForm();
+      } else {
+        showToast('สามารถเพิ่มแผนได้สูงสุด 5 แผน', 'info');
+      }
+    }
+
+    function removePlan() {
+      if (currentPlans > MIN_PLANS) {
+        currentPlans--;
+        renderPlansForm();
+      } else {
+        showToast('ต้องมีแผนอย่างน้อย 1 แผน', 'info');
+      }
     }
 
     // จัดการการส่งแบบฟอร์ม
@@ -316,25 +354,57 @@
         return;
       }
 
+      // เก็บข้อมูลแผน
+      const plans = [];
+      for (let i = 1; i <= currentPlans; i++) {
+        const codeInput = document.querySelector(`.subject-code[data-plan="${i}"]`);
+        const nameInput = document.querySelector(`.subject-name[data-plan="${i}"]`);
+        const fileInput = document.querySelector(`.pdf-file[data-plan="${i}"]`);
+
+        if (!codeInput.value || !nameInput.value || !fileInput.files[0]) {
+          showToast(`กรุณากรอกข้อมูลแผนที่ ${i} ให้ครบถ้วน`, 'error');
+          return;
+        }
+
+        plans.push({
+          subject_code: codeInput.value,
+          subject_name: nameInput.value,
+          pdf_file_name: fileInput.files[0].name
+        });
+      }
+
       // เตรียมข้อมูล
       const formData = {
         action: 'submitPlan',
         teacher_name: teacherName,
-        subject_group: subjectGroup
+        subject_group: subjectGroup,
+        plans: plans
       };
 
-      // เพิ่มข้อมูลแผน
-      for (let i = 1; i <= 5; i++) {
-        formData[`subject_code_${i}`] = document.getElementById(`subject-code-${i}`).value;
-        formData[`subject_name_${i}`] = document.getElementById(`subject-name-${i}`).value;
-        
-        const fileInput = document.getElementById(`pdf-file-${i}`);
-        if (fileInput.files[0]) {
-          formData[`pdf_file_name_${i}`] = fileInput.files[0].name;
-        }
+      setLoading(true);
+      
+      try {
+        // ส่งข้อมูลไปยัง Google Apps Script
+        google.script.run
+          .withSuccessHandler(() => {
+            setLoading(false);
+            showToast(`ส่งแผนการสอน ${currentPlans} แผนสำเร็จ!`, 'success');
+            document.getElementById('upload-form').reset();
+            currentPlans = 1;
+            renderPlansForm();
+            loadAllPlans();
+          })
+          .withFailureHandler((error) => {
+            setLoading(false);
+            showToast('เกิดข้อผิดพลาด: ' + error, 'error');
+            console.error('Error:', error);
+          })
+          .submitPlanData(JSON.stringify(formData));
+      } catch (error) {
+        setLoading(false);
+        showToast('เกิดข้อผิดพลาด: ' + error.toString(), 'error');
+        console.error('Error:', error);
       }
-
-      await handleSubmit(formData);
     }
 
     // จัดการการเปลี่ยน Tab
