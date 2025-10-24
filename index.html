@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="th">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบส่งแผนการสอนออนไลน์</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      font-family: 'Sarabun', sans-serif;
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #e0f2fe 0%, #fce4ec 100%);
+    }
+    .card-shadow {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    .status-pending { color: #6b7280; }
+    .status-approved { color: #059669; }
+    .status-revision { color: #d97706; }
+    .status-final { color: #0891b2; }
+    .status-late { color: #dc2626; }
+    .btn-primary {
+      background: linear-gradient(135deg, #0ea5e9 0%, #ec4899 100%);
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #0284c7 0%, #db2777 100%);
+      transform: translateY(-1px);
+    }
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      padding: 12px 24px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 500;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .toast.show {
+      transform: translateX(0);
+    }
+    .toast.success { background-color: #059669; }
+    .toast.error { background-color: #dc2626; }
+    .toast.info { background-color: #0891b2; }
+  </style>
+ </head>
+ <body class="gradient-bg min-h-full">
+  <div id="app" class="min-h-full">
+   <header class="bg-white shadow-md border-b-4 border-pink-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+     <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+       <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-md border-2 border-blue-200">
+        <img src="https://img2.pic.in.th/pic/S__145162426-removebg-preview.png" alt="โลโก้" class="w-14 h-14 object-contain rounded-full">
+       </div>
+       <div>
+        <h1 class="text-2xl font-bold text-gray-800">ระบบส่งแผนการสอนออนไลน์</h1>
+        <p class="text-lg text-blue-600">โรงเรียนราชประชานุเคราะห์ 56 จังหวัดน่าน</p>
+        <p class="text-sm text-gray-600">กลุ่มบริหารวิชาการ</p>
+       </div>
+      </div>
+      <div class="flex items-center space-x-4">
+       <div id="user-info" class="text-right">
+        <p class="text-sm text-gray-600">เข้าสู่ระบบ</p>
+        <p id="current-user" class="font-semibold text-blue-600">ครูผู้สอน</p>
+       </div>
+       <button id="logout-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"> ออกจากระบบ </button>
+      </div>
+     </div>
+    </div>
+   </header>
+
+   <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 card-shadow">
+     <div class="text-center mb-6">
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">เข้าสู่ระบบ</h2>
+      <p class="text-gray-600">ระบบส่งแผนการสอนออนไลน์</p>
+     </div>
+     <form id="login-form" class="space-y-4">
+      <div>
+       <label class="block text-sm font-medium text-gray-700 mb-2">ชื่อผู้ใช้</label>
+       <input type="text" id="username" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="teacher" required>
+      </div>
+      <div>
+       <label class="block text-sm font-medium text-gray-700 mb-2">รหัสผ่าน</label>
+       <input type="password" id="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="123" required>
+      </div>
+      <button type="submit" class="w-full btn-primary text-white py-3 rounded-lg font-semibold"> เข้าสู่ระบบ </button>
+     </form>
+    </div>
+   </div>
+
+   <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 hidden">
+    <div class="bg-white rounded-xl card-shadow mb-8">
+     <nav class="flex space-x-8 px-6 py-4">
+      <button id="tab-upload" class="tab-btn active px-4 py-2 font-semibold rounded-lg">📤 ส่งแผนการสอน</button>
+      <button id="tab-review" class="tab-btn px-4 py-2 font-semibold rounded-lg">✅ ตรวจสอบแผน</button>
+     </nav>
+    </div>
+
+    <div id="upload-tab" class="tab-content">
+     <div class="bg-white rounded-xl card-shadow p-6">
+      <h3 class="text-xl font-bold text-gray-800 mb-6">ส่งแผนการสอน</h3>
+      <form id="upload-form" class="space-y-6">
+       <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">ชื่อครูผู้สอน</label>
+        <input type="text" id="teacher-name" class="w-full px-4 py-3 border border-gray-300 rounded-lg" required>
+       </div>
+       <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">กลุ่มสาระ</label>
+        <select id="subject-group" class="w-full px-4 py-3 border border-gray-300 rounded-lg" required>
+         <option value="">เลือกกลุ่มสาระ</option>
+         <option value="วิทยาศาสตร์และเทคโนโลยี">วิทยาศาสตร์และเทคโนโลยี</option>
+         <option value="คณิตศาสตร์">คณิตศาสตร์</option>
+         <option value="ศิลปะ">ศิลปะ</option>
+         <option value="ภาษาไทย">ภาษาไทย</option>
+         <option value="ภาษาต่างประเทศ">ภาษาต่างประเทศ</option>
+        </select>
+       </div>
+
+       <div id="plans-container"></div>
+
+       <button type="submit" id="submit-btn" class="w-full btn-primary text-white py-3 rounded-lg font-semibold">ส่งแผนการสอน</button>
+      </form>
+     </div>
+    </div>
+
+    <div id="review-tab" class="tab-content hidden">
+     <div id="review-container" class="space-y-4"></div>
+    </div>
+   </main>
+  </div>
+
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyXXd9q3QbEW0Rpn1OhraNqhGue10VRwL_AcjDMc_twyfBdY5YPJ-vX8zsIh7J1bdN4/exec';
+    
+    let currentUser = null;
+    let currentPlans = 1;
+    const MAX_PLANS = 5;
+    const MIN_PLANS = 1;
+
+    function initApp() {
+      document.getElementById('login-form').addEventListener('submit', handleLogin);
+      document.getElementById('logout-btn').addEventListener('click', handleLogout);
+      document.getElementById('upload-form').addEventListener('submit', handleUploadSubmit);
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', handleTabChange);
+      });
+      renderPlansForm();
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      if (password === '123') {
+        currentUser = username;
+        document.getElementById('login-modal').classList.add('hidden');
+        document.getElementById('main-content').classList.remove('hidden');
+        document.getElementById('current-user').textContent = username;
+      } else {
+        showToast('รหัสผ่านไม่ถูกต้อง', 'error');
+      }
+    }
+
+    function handleLogout() {
+      currentUser = null;
+      document.getElementById('login-modal').classList.remove('hidden');
+      document.getElementById('main-content').classList.add('hidden');
+      document.getElementById('login-form').reset();
+      showToast('ออกจากระบบสำเร็จ', 'success');
+    }
+
+    function renderPlansForm() {
+      const container = document.getElementById('plans-container');
+      let html = '';
+      
+      for (let i = 1; i <= currentPlans; i++) {
+        html += `
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h4 class="font-semibold text-blue-800 mb-3">${i}. แผนการจัดการเรียนรู้ที่ ${i}</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">รหัสวิชา</label>
+                <input type="text" class="subject-code w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="ว21101" data-plan="${i}" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">ชื่อวิชา</label>
+                <input type="text" class="subject-name w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="วิทยาศาสตร์ ม.1" data-plan="${i}" required>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2">ไฟล์ PDF</label>
+                <input type="file" class="pdf-file w-full px-3 py-2 border border-gray-300 rounded-lg" accept=".pdf" data-plan="${i}" required>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      html += `
+        <div class="flex gap-3 mt-6">
+          <button type="button" id="add-plan-btn" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">➕ เพิ่มแผน</button>
+          <button type="button" id="remove-plan-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">➖ ลบแผน</button>
+          <span class="px-4 py-2 bg-gray-100 rounded-lg">แผน: <strong>${currentPlans}</strong>/5</span>
+        </div>
+      `;
+      
+      container.innerHTML = html;
+      document.getElementById('add-plan-btn').addEventListener('click', addPlan);
+      document.getElementById('remove-plan-btn').addEventListener('click', removePlan);
+    }
+
+    function addPlan() {
+      if (currentPlans < MAX_PLANS) {
+        currentPlans++;
+        renderPlansForm();
+      } else {
+        showToast('สูงสุด 5 แผน', 'info');
+      }
+    }
+
+    function removePlan() {
+      if (currentPlans > MIN_PLANS) {
+        currentPlans--;
+        renderPlansForm();
+      } else {
+        showToast('ต่ำสุด 1 แผน', 'info');
+      }
+    }
+
+    function handleUploadSubmit(e) {
+      e.preventDefault();
+      
+      const teacherName = document.getElementById('teacher-name').value;
+      const subjectGroup = document.getElementById('subject-group').value;
+
+      if (!teacherName || !subjectGroup) {
+        showToast('กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
+        return;
+      }
+
+      const plans = [];
+      for (let i = 1; i <= currentPlans; i++) {
+        const code = document.querySelector(`.subject-code[data-plan="${i}"]`).value;
+        const name = document.querySelector(`.subject-name[data-plan="${i}"]`).value;
+        const file = document.querySelector(`.pdf-file[data-plan="${i}"]`).files[0];
+
+        if (!code || !name || !file) {
+          showToast(`แผน ${i} ไม่สมบูรณ์`, 'error');
+          return;
+        }
+
+        plans.push({ subject_code: code, subject_name: name, pdf_file_name: file.name });
+      }
+
+      const submitBtn = document.getElementById('submit-btn');
+      submitBtn.classList.add('loading');
+      submitBtn.textContent = 'กำลังส่ง...';
+
+      fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'submitPlan',
+          teacher_name: teacherName,
+          subject_group: subjectGroup,
+          plans: plans
+        })
+      })
+      .then(res => res.json())
+      .then(result => {
+        submitBtn.classList.remove('loading');
+        submitBtn.textContent = 'ส่งแผนการสอน';
+        
+        if (result.success) {
+          showToast(`ส่งแผน ${currentPlans} แผนสำเร็จ!`, 'success');
+          document.getElementById('upload-form').reset();
+          currentPlans = 1;
+          renderPlansForm();
+        } else {
+          showToast(result.message || 'เกิดข้อผิดพลาด', 'error');
+        }
+      })
+      .catch(error => {
+        submitBtn.classList.remove('loading');
+        submitBtn.textContent = 'ส่งแผนการสอน';
+        showToast('Error: ' + error.message, 'error');
+      });
+    }
+
+    function handleTabChange(e) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('bg-blue-100', 'text-blue-600'));
+      
+      const tabName = e.target.id.replace('tab-', '');
+      document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+      e.target.classList.add('bg-blue-100', 'text-blue-600');
+    }
+
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 10);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, type === 'error' ? 5000 : 3000);
+    }
+
+    document.addEventListener('DOMContentLoaded', initApp);
+  </script>
+ </body>
+</html>
